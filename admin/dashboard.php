@@ -1,15 +1,14 @@
 <?php
 session_start();
-include("conn.php");
+include("../conn.php");
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
 $admin_username = $_SESSION['username'] ?? 'Admin';
 
-// Handle create account form
 $alert_type = '';
 $alert_msg  = '';
 
@@ -112,7 +111,6 @@ $total_today     = mysqli_fetch_assoc($today_result)['total'] ?? 0;
     </div>
 </div>
 
-<!-- Mobile backdrop -->
 <div id="backdrop" onclick="closeSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
 <div class="flex h-screen overflow-hidden">
@@ -121,7 +119,7 @@ $total_today     = mysqli_fetch_assoc($today_result)['total'] ?? 0;
     <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-pink-500 text-white flex flex-col shadow-lg
                                -translate-x-full md:translate-x-0 transition-transform duration-300">
         <div class="flex items-center p-4 gap-3">
-            <img class="w-12 h-12 flex-shrink-0" src="mainlogo.png" alt="CAMS Logo">
+            <img class="w-12 h-12 flex-shrink-0" src="../mainlogo.png" alt="CAMS Logo">
             <div>
                 <h1 class="font-bold text-xl uppercase tracking-tighter leading-none">CAMS</h1>
                 <p class="font-bold text-[8px] text-pink-100 uppercase tracking-wider opacity-90 leading-tight mt-0.5">
@@ -134,62 +132,45 @@ $total_today     = mysqli_fetch_assoc($today_result)['total'] ?? 0;
 
         <nav class="mt-4 flex-1 px-3">
             <ul class="space-y-1">
-                <li><a href="admin_dashboard.php" class="flex items-center bg-pink-600 border-l-4 border-white px-3 py-2.5 rounded-lg transition-all"><i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Dashboard</span></a></li>
-                <li><a href="patients_dashB.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Patients</span></a></li>
-                <li><a href="doctors_dashB.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="stethoscope" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Doctors</span></a></li>
-                <li><a href="appointment_dashB.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="clipboard-check" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Appointments</span></a></li>
-                <li><a href="notification_dashB.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="message-square-dot" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Notifications</span></a></li>
+                <li><a href="dashboard.php" class="flex items-center bg-pink-600 border-l-4 border-white px-3 py-2.5 rounded-lg transition-all"><i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Dashboard</span></a></li>
+                <li><a href="patients.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Patients</span></a></li>
+                <li><a href="doctors.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="stethoscope" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Doctors</span></a></li>
+                <li><a href="appointments.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="clipboard-check" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Appointments</span></a></li>
+                <li><a href="notifications.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="bell" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Notifications</span></a></li>
             </ul>
         </nav>
 
-        <!-- Logged in as -->
-        <div class="px-4 pb-3">
-            <div class="bg-pink-600/50 rounded-2xl p-3">
-                <p class="text-[10px] text-pink-200 font-bold uppercase tracking-widest mb-1">Logged in as</p>
-                <p class="font-bold text-white text-sm truncate"><?= htmlspecialchars($admin_username); ?></p>
-                <p class="text-pink-200 text-xs">Administrator</p>
-            </div>
-        </div>
-
-        <div class="px-3 pb-5">
+        <div class="px-3 pb-5 mt-auto">
             <hr class="border-pink-400 mb-3 opacity-50">
-            <button onclick="location.href='logout.php'" class="w-full flex items-center px-3 py-2.5 hover:bg-pink-700 rounded-xl transition-all text-pink-100 hover:text-white">
-                <i data-lucide="log-out" class="w-5 h-5 flex-shrink-0"></i>
-                <span class="ml-3 font-bold text-sm">Logout</span>
-            </button>
+            <div class="bg-pink-600/40 rounded-2xl p-3">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 bg-pink-400/50 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user-check" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-white text-sm truncate"><?= htmlspecialchars($admin_username); ?></p>
+                        <p class="text-pink-200 text-xs">Administrator</p>
+                    </div>
+                </div>
+                <button onclick="location.href='../logout.php'" class="w-full flex items-center justify-center gap-2 bg-pink-700/50 hover:bg-pink-700 px-3 py-2 rounded-xl transition-all text-pink-100 hover:text-white text-sm font-bold">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                </button>
+            </div>
         </div>
     </aside>
 
     <!-- Main -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        <!-- Topbar -->
-        <header class="bg-white border-b border-gray-100 shadow-sm px-6 py-4 flex justify-between items-center flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <button onclick="openSidebar()" class="md:hidden text-gray-500 hover:text-pink-500 transition-colors">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-                <h2 class="text-xl font-bold text-gray-700">Admin Dashboard</h2>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="text-right hidden sm:block">
-                    <p class="text-xs font-bold text-gray-800"><?= htmlspecialchars($admin_username); ?></p>
-                    <p class="text-[10px] text-green-500 font-semibold uppercase">Online</p>
-                </div>
-                <button onclick="openCreateModal()" title="Create Account"
-                    class="w-9 h-9 bg-pink-50 hover:bg-pink-100 rounded-full flex items-center justify-center text-pink-500 transition-colors">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i>
-                </button>
-                <div class="w-9 h-9 bg-pink-100 rounded-full flex items-center justify-center text-pink-500">
-                    <i data-lucide="user-check" class="w-4 h-4"></i>
-                </div>
-            </div>
+        <header class="bg-white border-b border-gray-100 shadow-sm px-6 py-4 flex items-center flex-shrink-0">
+            <button onclick="openSidebar()" class="md:hidden text-gray-500 hover:text-pink-500 transition-colors mr-4">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <h2 class="text-xl font-bold text-gray-700">Admin Dashboard</h2>
         </header>
 
-        <!-- Body -->
         <main class="flex-1 overflow-y-auto custom-scrollbar p-6">
 
-            <!-- Stats -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
                     <div class="w-11 h-11 bg-pink-50 rounded-xl flex items-center justify-center text-pink-500 flex-shrink-0">
@@ -229,14 +210,13 @@ $total_today     = mysqli_fetch_assoc($today_result)['total'] ?? 0;
                 </div>
             </div>
 
-            <!-- Recent Appointments -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
                     <div>
                         <h3 class="text-lg font-black text-gray-800">Recent Appointments</h3>
                         <p class="text-xs text-gray-400 font-medium mt-0.5">Latest 10 bookings</p>
                     </div>
-                    <a href="appointment_dashB.php" class="text-pink-500 font-bold text-sm hover:underline">View All →</a>
+                    <a href="appointments.php" class="text-pink-500 font-bold text-sm hover:underline">View All →</a>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
@@ -296,7 +276,6 @@ $total_today     = mysqli_fetch_assoc($today_result)['total'] ?? 0;
         document.getElementById('backdrop').classList.add('hidden');
     }
 
-    // Create Account modal
     function openCreateModal() {
         document.getElementById('createAccountModal').classList.remove('hidden');
         document.getElementById('createAccountModal').classList.add('flex');
@@ -309,7 +288,6 @@ $total_today     = mysqli_fetch_assoc($today_result)['total'] ?? 0;
         if (e.target === this) closeCreateModal();
     });
 
-    // Alert modal
     function closeAlert() {
         document.getElementById('alertModal').classList.add('hidden');
         document.getElementById('alertModal').classList.remove('flex');

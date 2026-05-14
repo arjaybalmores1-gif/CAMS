@@ -4,7 +4,7 @@ include "conn.php";
 
 // Already logged in? Redirect.
 if (isset($_SESSION['role'])) {
-    header("Location: " . ($user['role'] === 'admin' ? 'admin_dashboard.php' : 'patient_portal.php'));
+    header("Location: " . ($_SESSION['role'] === 'admin' ? 'admin/dashboard.php' : 'patient/portal.php'));
     exit();
 }
 
@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role']     = $user['role'];
 
-            header("Location: " . ($user['role'] === 'admin' ? 'admin_dashboard.php' : 'patient_portal.php'));
+            header("Location: " . ($user['role'] === 'admin' ? 'admin/dashboard.php' : 'patient/portal.php'));
             exit();
         } else {
             $alert_type = 'error';
@@ -109,7 +109,7 @@ if (isset($_POST['login'])) {
         <div class="mt-6 pt-6 border-t border-gray-100 text-center space-y-3">
             <div>
                 <p class="text-sm text-gray-500">New patient?</p>
-                <a href="patient_register.php" class="inline-flex items-center gap-2 mt-1 text-pink-500 hover:text-pink-700 font-bold text-sm transition-colors">
+                <a href="patient/register.php" class="inline-flex items-center gap-2 mt-1 text-pink-500 hover:text-pink-700 font-bold text-sm transition-colors">
                     <i data-lucide="user-plus" class="w-4 h-4"></i>
                     Create a patient account
                 </a>

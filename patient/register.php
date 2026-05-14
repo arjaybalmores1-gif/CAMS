@@ -2,19 +2,19 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'src/PHPMailer.php';
-require 'src/SMTP.php';
-require 'src/Exception.php';
+require '../src/PHPMailer.php';
+require '../src/SMTP.php';
+require '../src/Exception.php';
 
 session_start();
-include("conn.php");
+include("../conn.php");
 
 // Already logged in? Redirect.
 if (isset($_SESSION['role'])) {
     $redirect = match($_SESSION['role']) {
-        'admin'   => 'admin_dashboard.php',
-        'patient' => 'patient_portal.php',
-        default   => 'login.php',
+        'admin'   => '../admin/dashboard.php',
+        'patient' => 'portal.php',
+        default   => '../login.php',
     };
     header("Location: $redirect");
     exit();
@@ -120,7 +120,7 @@ if (isset($_POST['register'])) {
     <!-- Logo -->
     <div class="text-center mb-8">
         <div class="flex items-center justify-center gap-3 mb-2">
-            <img src="mainlogo.png" alt="CAMS" class="w-12 h-12">
+            <img src="../mainlogo.png" alt="CAMS" class="w-12 h-12">
             <div class="text-left">
                 <h1 class="font-black text-pink-500 text-2xl uppercase tracking-tight">CAMS</h1>
                 <p class="text-[9px] text-gray-400 uppercase tracking-widest font-bold leading-none">Patient Portal</p>
@@ -154,7 +154,7 @@ if (isset($_POST['register'])) {
                 <i data-lucide="check-circle" class="w-5 h-5 text-green-500 flex-shrink-0"></i>
                 <div>
                     <p class="text-sm text-green-700 font-medium"><?= htmlspecialchars($success); ?></p>
-                    <a href="login.php" class="text-sm text-green-600 font-bold underline mt-1 inline-block">Go to Login →</a>
+                    <a href="../login.php" class="text-sm text-green-600 font-bold underline mt-1 inline-block">Go to Login →</a>
                 </div>
             </div>
             <?php endif; ?>
@@ -242,7 +242,7 @@ if (isset($_POST['register'])) {
 
                 <p class="text-center text-sm text-gray-500">
                     Already have an account?
-                    <a href="login.php" class="text-pink-500 font-bold hover:underline">Log in here</a>
+                    <a href="../login.php" class="text-pink-500 font-bold hover:underline">Log in here</a>
                 </p>
             </form>
         </div>

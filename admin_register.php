@@ -4,7 +4,7 @@ include "conn.php";
 
 // If already logged in, redirect
 if (isset($_SESSION['role'])) {
-    header("Location: " . ($_SESSION['role'] === 'admin' ? 'admin_dashboard.php' : 'patient_portal.php'));
+    header("Location: " . ($_SESSION['role'] === 'admin' ? 'admin/dashboard.php' : 'patient/portal.php'));
     exit();
 }
 

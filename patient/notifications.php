@@ -1,12 +1,9 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 session_start();
-include("conn.php");
+include("../conn.php");
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'patient') {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -59,53 +56,39 @@ if ($patient_id) {
 <div class="flex h-screen overflow-hidden">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-pink-500 text-white flex flex-col shadow-lg
-                               -translate-x-full md:translate-x-0 transition-transform duration-300">
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-pink-500 text-white flex flex-col shadow-lg -translate-x-full md:translate-x-0 transition-transform duration-300">
         <div class="flex items-center p-4 gap-3">
-            <img class="w-12 h-12 flex-shrink-0" src="mainlogo.png" alt="CAMS Logo">
+            <img class="w-12 h-12 flex-shrink-0" src="../mainlogo.png" alt="CAMS Logo">
             <div>
                 <h1 class="font-bold text-xl uppercase tracking-tighter leading-none">CAMS</h1>
-                <p class="font-bold text-[8px] text-pink-100 uppercase tracking-wider opacity-90 leading-tight mt-0.5">
-                    Patient Portal
-                </p>
+                <p class="font-bold text-[8px] text-pink-100 uppercase tracking-wider opacity-90 leading-tight mt-0.5">Clinic Appointment <br> Management System</p>
             </div>
         </div>
-
         <hr class="border-pink-400 mx-4 opacity-50">
-
         <nav class="mt-4 flex-1 px-3">
             <ul class="space-y-1">
-                <li>
-                    <a href="patient_portal.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i>
-                        <span class="ml-3 font-medium text-sm whitespace-nowrap">My Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="patient_notifications.php" class="flex items-center bg-pink-600 border-l-4 border-white px-3 py-2.5 rounded-lg transition-all">
-                        <i data-lucide="bell" class="w-5 h-5 flex-shrink-0"></i>
-                        <span class="ml-3 font-medium text-sm whitespace-nowrap">Notifications</span>
-                    </a>
-                </li>
+                <li><a href="portal.php" class="flex items-center hover:bg-pink-600 px-3 py-2.5 rounded-lg transition-all"><i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">My Dashboard</span></a></li>
+                <li><a href="notifications.php" class="flex items-center bg-pink-600 border-l-4 border-white px-3 py-2.5 rounded-lg transition-all"><i data-lucide="bell" class="w-5 h-5 flex-shrink-0"></i><span class="ml-3 font-medium text-sm whitespace-nowrap">Notifications</span></a></li>
             </ul>
         </nav>
-
-        <?php if ($patient): ?>
-        <div class="px-4 pb-3">
-            <div class="bg-pink-600/50 rounded-2xl p-3">
-                <p class="text-[10px] text-pink-200 font-bold uppercase tracking-widest mb-1">Logged in as</p>
-                <p class="font-bold text-white text-sm truncate"><?= htmlspecialchars($patient['name']); ?></p>
-                <p class="text-pink-200 text-xs truncate"><?= htmlspecialchars($user_email); ?></p>
-            </div>
-        </div>
-        <?php endif; ?>
-
-        <div class="px-3 pb-5">
+        <div class="px-3 pb-5 mt-auto">
             <hr class="border-pink-400 mb-3 opacity-50">
-            <button onclick="location.href='logout.php'" class="w-full flex items-center px-3 py-2.5 hover:bg-pink-700 rounded-xl transition-all text-pink-100 hover:text-white">
-                <i data-lucide="log-out" class="w-5 h-5 flex-shrink-0"></i>
-                <span class="ml-3 font-bold text-sm">Logout</span>
-            </button>
+            <?php if ($patient): ?>
+            <div class="bg-pink-600/40 rounded-2xl p-3">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 bg-pink-400/50 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-white text-sm truncate"><?= htmlspecialchars($patient['name']); ?></p>
+                        <p class="text-pink-200 text-xs truncate"><?= htmlspecialchars($user_email); ?></p>
+                    </div>
+                </div>
+                <button onclick="location.href='../logout.php'" class="w-full flex items-center justify-center gap-2 bg-pink-700/50 hover:bg-pink-700 px-3 py-2 rounded-xl transition-all text-pink-100 hover:text-white text-sm font-bold">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                </button>
+            </div>
+            <?php endif; ?>
         </div>
     </aside>
 
@@ -113,22 +96,11 @@ if ($patient_id) {
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         <!-- Topbar -->
-        <header class="bg-white border-b border-gray-100 shadow-sm px-6 py-4 flex justify-between items-center flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <button onclick="openSidebar()" class="md:hidden text-gray-500 hover:text-pink-500 transition-colors">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-                <h2 class="text-xl font-bold text-gray-700">My Notifications</h2>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="text-right hidden sm:block">
-                    <p class="text-xs font-bold text-gray-800"><?= htmlspecialchars($patient['name'] ?? $username); ?></p>
-                    <p class="text-[10px] text-green-500 font-semibold uppercase">Online</p>
-                </div>
-                <div class="w-9 h-9 bg-pink-100 rounded-full flex items-center justify-center text-pink-500">
-                    <i data-lucide="user" class="w-4 h-4"></i>
-                </div>
-            </div>
+        <header class="bg-white border-b border-gray-100 shadow-sm px-6 py-4 flex items-center flex-shrink-0">
+            <button onclick="openSidebar()" class="md:hidden text-gray-500 hover:text-pink-500 transition-colors mr-4">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <h2 class="text-xl font-bold text-gray-700">My Notifications</h2>
         </header>
 
         <!-- Body -->
@@ -156,11 +128,18 @@ if ($patient_id) {
                         $fmt_date = date('M d, Y', strtotime($notif['appointment_date']));
                         $fmt_time = date('h:i A', strtotime($notif['appointment_time']));
 
-                        // Icon + color based on message type
+                        // Icon + color based on the notification message (what was communicated at send time)
                         [$icon, $bg, $text, $border] = match(true) {
-                            str_contains($msg, 'Approved')  => ['check-circle',  'bg-green-50',  'text-green-600',  'border-green-200'],
-                            str_contains($msg, 'Cancelled') => ['x-circle',      'bg-red-50',    'text-red-600',    'border-red-200'],
-                            default                         => ['clock',         'bg-yellow-50', 'text-yellow-600', 'border-yellow-200'],
+                            str_contains($msg, 'Approved')  => ['check-circle', 'bg-green-50',  'text-green-600',  'border-green-200'],
+                            str_contains($msg, 'Cancelled') => ['x-circle',     'bg-red-50',    'text-red-600',    'border-red-200'],
+                            default                         => ['clock',        'bg-yellow-50', 'text-yellow-600', 'border-yellow-200'],
+                        };
+
+                        // Badge reflects the notification message, not the current appointment status
+                        $badge_label = match(true) {
+                            str_contains($msg, 'Approved')  => 'Approved',
+                            str_contains($msg, 'Cancelled') => 'Cancelled',
+                            default                         => 'Pending',
                         };
                     ?>
                     <div class="px-6 py-5 border-b border-gray-50 hover:bg-gray-50/50 transition-all">
@@ -172,7 +151,7 @@ if ($patient_id) {
                                 <div class="flex items-center justify-between gap-2 flex-wrap">
                                     <p class="font-bold text-gray-800 text-sm"><?= htmlspecialchars($msg); ?></p>
                                     <span class="<?= $bg; ?> <?= $text; ?> border <?= $border; ?> px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase flex-shrink-0">
-                                        <?= htmlspecialchars($status); ?>
+                                        <?= $badge_label; ?>
                                     </span>
                                 </div>
                                 <p class="text-xs text-gray-500 mt-1">

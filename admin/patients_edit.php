@@ -1,25 +1,23 @@
 <?php
 session_start();
-include("conn.php");
+include("../conn.php");
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
-// Fetch patient data by ID
 if (isset($_GET['id'])) {
     $id   = (int) $_GET['id'];
     $res  = mysqli_query($conn, "SELECT * FROM patients WHERE id = $id");
     $data = mysqli_fetch_assoc($res);
 
     if (!$data) {
-        header("Location: patients_dashB.php?status=error&msg=Patient+not+found.");
+        header("Location: patients.php?status=error&msg=Patient+not+found.");
         exit;
     }
 }
 
-// Handle update form submission
 if (isset($_POST['update'])) {
     $id      = (int) $_POST['id'];
     $name    = $conn->real_escape_string($_POST['name']);
@@ -32,15 +30,14 @@ if (isset($_POST['update'])) {
     $sql = "UPDATE patients SET name='$name', age='$age', gender='$gender', contact='$contact', email='$email', address='$address' WHERE id=$id";
 
     if (mysqli_query($conn, $sql)) {
-        header("Location: patients_dashB.php?status=success&msg=Patient+record+updated+successfully!");
+        header("Location: patients.php?status=success&msg=Patient+record+updated+successfully!");
         exit();
     } else {
-        header("Location: patients_dashB.php?status=error&msg=Error+updating+record.");
+        header("Location: patients.php?status=error&msg=Error+updating+record.");
         exit();
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,8 +50,6 @@ if (isset($_POST['update'])) {
 <body class="bg-gray-50 flex items-center justify-center min-h-screen p-6">
 
     <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-
-        <!-- Header -->
         <div class="bg-pink-500 p-6 text-white flex items-center gap-3">
             <i data-lucide="edit-3"></i>
             <h3 class="text-xl font-bold">Update Patient Record</h3>
@@ -104,7 +99,7 @@ if (isset($_POST['update'])) {
             </div>
 
             <div class="flex gap-3 pt-4">
-                <a href="patients_dashB.php" class="flex-1 px-6 py-3 border border-gray-200 text-center rounded-xl font-bold text-sm hover:bg-gray-50 transition-all">Cancel</a>
+                <a href="patients.php" class="flex-1 px-6 py-3 border border-gray-200 text-center rounded-xl font-bold text-sm hover:bg-gray-50 transition-all">Cancel</a>
                 <button type="submit" name="update" class="flex-1 px-6 py-3 bg-pink-500 text-white rounded-xl font-bold text-sm shadow-lg hover:bg-pink-600 transition-all">Update Record</button>
             </div>
         </form>

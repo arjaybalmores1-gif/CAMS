@@ -1,12 +1,12 @@
 <?php
-include("conn.php");
+include("../conn.php");
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'src/PHPMailer.php';
-require 'src/SMTP.php';
-require 'src/Exception.php';
+require '../src/PHPMailer.php';
+require '../src/SMTP.php';
+require '../src/Exception.php';
 
 function sendEmail(string $to, string $subject, string $message): void
 {
